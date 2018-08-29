@@ -2,8 +2,8 @@ const buttonChoices = ["Formula 1", "Ferrari F1", "Red Bull F1", "Aryton Senna",
 
 
 let searchTerm = '';
-//let URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=10&offset=0&rating=Y&lang=en";
 let URL = '';
+
 
 function pushButtons() {
     for (let i = 0; i < buttonChoices.length; i++) {
@@ -11,22 +11,26 @@ function pushButtons() {
 
     };
 
-   
 };
 
 function buttonClicked(button_id) {
-    URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + button_id + "&limit=10&offset=0&rating=Y&lang=en";
-    console.log(button_id);
-    console.log(URL);
+    searchTerm = button_id.replace(' ', '+');
+    URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=10&offset=0&rating=Y&lang=en";
+    let output = [];
+    $.ajax({
+        url: URL,
+        method: "GET"
+    }).then (function(response) {
+        output = response;
+        console.log(response);
+        console.log("1 " + output);
+    });
+    for (let i = 0; i < output.length; i++) {
+        console.log("2 " + output);
+        $("#content").append("<div>works</div>");
+    };
 };
 
-
-
-// $.ajax({
-
-// }).then(function(response){
-
-// });
 
 
 
