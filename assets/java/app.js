@@ -17,15 +17,15 @@ function pushButtons() {
 //When gif image is clicked, checks to see if the class is "still" or not then replaces with appropriate URL
 function giphyClicked(giphy_id) {
     let j = giphy_id;
-    if ($("#"+j+"").is(".still") === true) {
-        $("#"+j+"").replaceWith(outputAni[j]);
-    }else {
-        $("#"+j+"").replaceWith(outputStill[j]);
+    if ($("#" + j + "").is(".still") === true) {
+        $("#" + j + "").replaceWith(outputAni[j]);
+    } else {
+        $("#" + j + "").replaceWith(outputStill[j]);
     }
 };
 
 //add button through the input box when users pushes submit
-$("#submit").on("click", function(){
+$("#submit").on("click", function () {
     buttonChoices.push($(".add").val());
     pushButtons(buttonChoices);
 })
@@ -37,19 +37,22 @@ function buttonClicked(button_id) {
     $.ajax({
         url: URL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
         console.log(response);
         outputAni = [];
         outputStill = [];
         for (let i = 0; i < response.data.length; i++) {
-            outputStill.push(`<figure>
-                            <img class="still" onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.downsized_still.url}">
+            outputStill.push(`<figure id="${i}" class="still" onClick="giphyClicked(this.id)">
+                            <img src="${response.data[i].images.downsized_still.url}">
                                 <figcaption>Rating: ${response.data[i].rating}</figcaption>
                             </figure>`);
-            outputAni.push(`<img class="gif" onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.downsized.url}">`);
+            outputAni.push(`<figure id="${i}" class="gif" onClick="giphyClicked(this.id)">
+            <img  src="${response.data[i].images.downsized.url}">
+                <figcaption>Rating: ${response.data[i].rating}</figcaption>
+            </figure>`);
         };
-        $("#gifZone").html(outputStill.join(''));    
-});
+        $("#gifZone").html(outputStill.join(''));
+    });
 }
 
 pushButtons(buttonChoices);

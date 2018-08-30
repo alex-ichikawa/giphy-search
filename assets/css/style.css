@@ -4,8 +4,7 @@ button {
     margin-top: 10px;
 }
 
-.still,
-.gif {
+img {
     height: 250px;
     margin: 10px 10px 10px 10px;
 }
