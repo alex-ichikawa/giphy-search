@@ -1,4 +1,4 @@
-const buttonChoices = ["Futurama", "Rick and Morty", "Parks and Rec", "Bob's Burgers", "South Park", "The Office", "American Dad", "Family Guy"]
+const buttonChoices = ["Futurama", "Friends", "Rick and Morty", "Parks and Rec", "Breaking Bad", "Bob's Burgers", "Seinfeld", "South Park", "The Office", "American Dad", "Family Guy", "How I Met Your Mother", "Frasier"]
 
 
 let searchTerm = '';
@@ -10,7 +10,7 @@ let outputStill = [];
 function pushButtons() {
     $("#buttons").empty();
     for (let i = 0; i < buttonChoices.length; i++) {
-        $("#buttons").append(`<button type="button" class="clicked" onClick="buttonClicked(this.id)" id="${buttonChoices[i]}">${buttonChoices[i]}</button>`);
+        $("#buttons").append(`<button type="button" class="btn" onClick="buttonClicked(this.id)" id="${buttonChoices[i]}">${buttonChoices[i]}</button>`);
     };
 };
 
