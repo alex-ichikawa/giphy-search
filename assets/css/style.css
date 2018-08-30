@@ -24,3 +24,14 @@ figure {
     position: absolute;
     bottom: 10px;
 }
+
+body {
+    background-color: 	#ccffff;
+}
+
+
+.gifBox {
+    overflow-y: scroll;
+    height: 650px;
+    overflow: auto;
+}
