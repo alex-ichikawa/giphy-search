@@ -1,6 +1,7 @@
 button {
     margin-right: 10px;
     margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .still,
@@ -11,4 +12,11 @@ button {
 
 .add {
     margin-bottom: 10px;
+}
+
+figure {
+    max-height: 260px;
+    float: left;
+    margin-bottom: 15px;
+    margin-top: 15px;
 }
