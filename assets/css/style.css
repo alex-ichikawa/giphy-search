@@ -19,3 +19,8 @@ figure {
     margin-bottom: 15px;
     margin-top: 15px;
 }
+
+#more {
+    position: absolute;
+    bottom: 10px;
+}

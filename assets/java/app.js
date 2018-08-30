@@ -5,6 +5,9 @@ let searchTerm = '';
 let URL = '';
 let outputAni = [];
 let outputStill = [];
+let searchAmt = 10;
+
+document.getElementById("more").style.display = "none";
 
 //Creates buttons on the DOM
 function pushButtons() {
@@ -30,15 +33,14 @@ $("#submit").on("click", function () {
     pushButtons(buttonChoices);
 })
 
-//when button is clicked calls the giphy API and searches by the value of the button, pushes to the DOM
-function buttonClicked(button_id) {
-    searchTerm = button_id.replace(' ', '+');
-    URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=10&offset=0&lang=en";
+//add 5 more gifs whenever the more button is clicked
+$("#more").on("click", function() {
+    searchAmt = searchAmt + 5;
+    URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=" + searchAmt + "&offset=0&lang=en";
     $.ajax({
         url: URL,
         method: "GET"
     }).then(function (response) {
-        console.log(response);
         outputAni = [];
         outputStill = [];
         for (let i = 0; i < response.data.length; i++) {
@@ -52,7 +54,37 @@ function buttonClicked(button_id) {
             </figure>`);
         };
         $("#gifZone").html(outputStill.join(''));
+        document.getElementById("more").style.display = "block";
+    });
+})
+
+//when button is clicked calls the giphy API and searches by the value of the button, pushes to the DOM
+function buttonClicked(button_id) {
+    searchAmt = 10;
+    outputAni = [];
+    outputStill = [];
+    searchTerm = button_id.replace(' ', '+');
+    URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=" + searchAmt + "&offset=0&lang=en";
+    $.ajax({
+        url: URL,
+        method: "GET"
+    }).then(function (response) {
+        console.log(response);
+        outputStill = [];
+        for (let i = 0; i < response.data.length; i++) {
+            outputStill.push(`<figure id="${i}" class="still" onClick="giphyClicked(this.id)">
+                            <img src="${response.data[i].images.downsized_still.url}">
+                                <figcaption>Rating: ${response.data[i].rating}</figcaption>
+                            </figure>`);
+            outputAni.push(`<figure id="${i}" class="gif" onClick="giphyClicked(this.id)">
+            <img  src="${response.data[i].images.downsized.url}">
+                <figcaption>Rating: ${response.data[i].rating}</figcaption>
+            </figure>`);
+        };
+        $("#gifZone").html(outputStill.join(''));
+        document.getElementById("more").style.display = "block";
     });
 }
+
 
 pushButtons(buttonChoices);
