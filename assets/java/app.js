@@ -1,49 +1,50 @@
-const buttonChoices = ["Dog", "Cat", "Mouse", "Formula 1", "Ferrari F1", "Red Bull F1", "Aryton Senna", "Michael Schumacher", "Kimi Raikkonen", "Fernando Alonso", "Jenson Button", "Mark Webber"]
+const buttonChoices = ["Futurama", "Rick and Morty", "Parks and Rec", "Bob's Burgers", "South Park", "The Office", "American Dad", "Family Guy"]
 
 
 let searchTerm = '';
 let URL = '';
 let outputAni = [];
+let outputStill = [];
 
+//Creates buttons on the DOM
 function pushButtons() {
+    $("#buttons").empty();
     for (let i = 0; i < buttonChoices.length; i++) {
         $("#buttons").append(`<button type="button" class="clicked" onClick="buttonClicked(this.id)" id="${buttonChoices[i]}">${buttonChoices[i]}</button>`);
-
     };
-
 };
 
+//When gif image is clicked, checks to see if the class is "still" or not then replaces with appropriate URL
 function giphyClicked(giphy_id) {
-    console.log(giphy_id);
     let j = giphy_id;
-    console.log(j);
-   // document.getElementById("0").style.visibility = 'hidden';
-    $("#"+j+"").replaceWith(outputAni[j]);//`<img id="${j}" onClick="giphyClicked(this.id)" src="${outputAni[j].data.images.downsized_small.url}"></img>`)
- };
+    if ($("#"+j+"").is(".still") === true) {
+        $("#"+j+"").replaceWith(outputAni[j]);
+    }else {
+        $("#"+j+"").replaceWith(outputStill[j]);
+    }
+};
 
+//add button through the input box when users pushes submit
+$("#submit").on("click", function(){
+    buttonChoices.push($(".add").val());
+    pushButtons(buttonChoices);
+})
+
+//when button is clicked calls the giphy API and searches by the value of the button, pushes to the DOM
 function buttonClicked(button_id) {
     searchTerm = button_id.replace(' ', '+');
     URL = "https://api.giphy.com/v1/gifs/search?api_key=LLHzPvE7ufGbvRc80wsluvMS4Ub9hVwu&q=" + searchTerm + "&limit=10&offset=0&rating=Y&lang=en";
-    let outputStill = [];
-    //let outputAni = [];
     $.ajax({
         url: URL,
         method: "GET"
     }).then(function(response) {
-        console.log(response.data);
+        outputAni = [];
+        outputStill = [];
         for (let i = 0; i < response.data.length; i++) {
-            outputStill.push(`<img onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.fixed_width_small_still.url}"></img>`);
-              outputAni.push(`<img onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.fixed_width_small.url}"></img>`);
+            outputStill.push(`<img class="still" onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.downsized_still.url}"></img>`);
+            outputAni.push(`<img class="gif" onClick="giphyClicked(this.id)" id="${i}" src="${response.data[i].images.downsized.url}"></img>`);
         };
-        $("#content").html(outputStill.join(''));
-        console.log(outputStill);
-        console.log(outputAni);
-        
-    // }).then(function giphyClicked(giphy_id) {
-    //     let j = giphy_id;
-    //       $(`"#${j}"`).html(outputAni[j]);//`<img id="${j}" onClick="giphyClicked(this.id)" src="${outputAni[j].data.images.downsized_small.url}"></img>`)
-    //  });
-    
+        $("#gifZone").html(outputStill.join(''));    
 });
 }
 
